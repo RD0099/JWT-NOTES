@@ -1,0 +1,85 @@
+---- JWT Authentication in FASTApi (python) ----
+- JWT : json web token.
+- way to securely authenticate users in an API.
+- token based authentication mechanism.
+- JWT has 3 parts:
+    parts               Meaning
+   Header           Token type and algorithm
+   Payload          User information and claims
+   Signature        Verifies token authenticity/protect integrity of the token.
+
+Example Header:
+- contains information about the token.
+
+{
+    "alg" : "HS256",  - HMAC using SHA-256.
+    "typ" : "JWT"
+}
+- alg : algorithm used to sign the token.
+- typ : token type.
+
+Example JWT payload:
+
+{
+    "sub":"101",
+    "email":"rahul@gmail.com",
+    "role":"admin",
+    "exp": 1795536000
+}
+
+- sub: Subject(usually user ID).
+- email: User email.
+- exp : Token expiration time.
+
+=== important ===
+- jwt payload is encoded, not encrypted.
+- never store passwords or sensitive information inside it.
+
+== install this ==
+pip install python-jose[cryptography] passlib[bcrypt] python-multipart
+
+- python-jose : Generate and verify JWT tokens.
+- passlib : Hash and verify password.
+- python-multipart : Read login from data.
+
+=== Important JWT concepts ===
+Concept	                Purpose
+Authentication	    Who are you?
+Authorization	    What can you access?/check permission.
+Access Token	    Allows access to protected APIs
+Secret Key	        Used to sign and verify tokens
+Expiration	        Defines when token becomes invalid
+Bearer Token	    Token sent in Authorization header
+Password Hashing	Stores passwords securely
+
+---> what is authentication?
+- verify the identity of user.
+
+---> What is HS256 and RS256?
+- These are JWT signing algorithms.
+
+- Two commonly used algorithms are:
+
+Feature	          HS256	              RS256
+Type	        Symmetric	        Asymmetric
+Keys	        One shared secret	Public and private key pair
+Signing	        Secret key	        Private key
+Verification    Same secret key	    Public key
+Common use	    Single application	Multiple services
+
+===== Access Token =====
+- access token is used to access protected APIs.
+- Typical lifetime: 5–30 minutes, depending on application security requirements.
+
+===== Refresh Token =====
+- used to obtain a new access token without asking the user to log in again.
+- Typical lifetime: Days or weeks, depending on the security policy.
+
+Access Token	             Refresh Token
+Accesses protected APIs	     Obtains new access tokens
+Short lifetime	             Longer lifetime
+Sent with API requests	     Sent only to refresh endpoint
+Limited permissions	         Used for session renewal
+
+- Refresh tokens should be protected carefully. In production, use secure 
+  storage, server-side tracking or revocation, and preferably refresh-token rotation.
